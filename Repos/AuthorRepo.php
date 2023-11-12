@@ -10,7 +10,7 @@ class AuthorRepo
         $this->pdo = $conn->connect();
     }
 
-    public function getAllAuthor(): ?array
+    public function getAll(): ?array
     {
         $sql = 'SELECT * FROM author';
         $statement = $this->pdo->prepare($sql);
@@ -20,5 +20,17 @@ class AuthorRepo
             return $articles;
         else
             return null;
+    }
+
+    function getById ($id ){
+        $sql = 'SELECT * FROM author where id=:id';
+        $statement = $GLOBALS['pdo']->prepare($sql);
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+        $statement->execute();
+        $author = $statement->fetch(PDO::FETCH_ASSOC);
+        if(!empty($author)){
+            return $author;
+        }
+        return null;
     }
 }

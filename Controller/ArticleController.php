@@ -23,7 +23,7 @@ class ArticleController
     public function index()
     {
         $articles = $this->articleRepo->getAll();
-        $authors = $this->authorRepo->getAllAuthor();
+        $authors = $this->authorRepo->getAll();
 
         if (empty($articles) || empty($authors)) {
             $_SESSION['message'] = "<h3>can't load articles <br></h3>";
@@ -34,7 +34,7 @@ class ArticleController
 
     public function createView()
     {
-        $authors = $this->authorRepo->getAllAuthor();
+        $authors = $this->authorRepo->getAll();
         if (empty($authors)) {
             $_SESSION['message'] = "<h3>can't load Create Form  <br></h3>";
             require_once __DIR__ . '/../views/error_page.php';
@@ -45,7 +45,7 @@ class ArticleController
 
     public function updateView()
     {
-        $authors = $this->authorRepo->getAllAuthor();
+        $authors = $this->authorRepo->getAll();
         if (empty($authors)) {
             $_SESSION['message'] = "<h3>can't load Create Form  <br></h3>";
             require_once __DIR__ . '/../views/error_page.php';
@@ -78,7 +78,6 @@ class ArticleController
                 require_once __DIR__ . '/../views/error_page.php';
             } else {
                 require_once __DIR__ . '/../views/delete_article_page.php';
-                exit;
             }
         }
     }
@@ -89,8 +88,7 @@ class ArticleController
             try {
                 if (empty($_POST["title"]) || empty($_POST["body"]) || !is_int((int)$_POST["author"])) {
                     $_SESSION['data'] = ['title' => $_POST["title"], 'body' => $_POST["body"], 'error' => "Invalid or Empty Values"];
-                    header('Location: ./../views/index.php?controller=Article&action=createView');
-                    exit;
+                    $this->helper->redirectTo('./../views/index.php?controller=Article&action=createView');
                 } else {
                     $title = $this->helper->filterStringInput($_POST["title"]);
                     $body = $this->helper->filterStringInput($_POST["body"]);
@@ -98,8 +96,7 @@ class ArticleController
                     $new_article = ["title" => $title, "body" => $body, "author_id" => $author_id];
                     $res = $this->articleRepo->create($new_article);
                     if ($res) {
-                        header('Location: ./../views/index.php?controller=Article&action=index');
-                        exit;
+                        $this->helper->redirectTo('./../views/index.php?controller=Article&action=index');
                     } else {
                         $_SESSION['message'] = "<h3>can't create this Article <br></h3>";
                         require_once __DIR__ . '/../views/error_page.php';
@@ -133,16 +130,14 @@ class ArticleController
                 } else {
                     if (empty($_POST["title"]) || empty($_POST["body"]) || !is_int((int)$_POST["author"])) {
                         $_SESSION['data'] = ['title' => $_POST["title"], 'body' => $_POST["body"], 'author' => (int)$_POST["author"], 'error' => "Invalid or Empty Values"];
-                        header('Location: ./../views/index.php?controller=Article&action=updateView&id=' . $updated_article_id);
-                        exit;
+                        $this->helper->redirectTo('./../views/index.php?controller=Article&action=updateView&id=' . $updated_article_id);
                     } else {
                         $updated_article['title'] = $this->helper->filterStringInput($_POST["title"]);
                         $updated_article['body'] = $this->helper->filterStringInput($_POST["body"]);
                         $updated_article['author'] = (int)$_POST["author"];
 
                         if ($this->articleRepo->update($updated_article)) {
-                            header('Location: ./../views/index.php?controller=Article&action=index');
-                            exit;
+                            $this->helper->redirectTo('./../views/index.php?controller=Article&action=index');
                         } else
                             $_SESSION['message'] = "<h3>sorry, error happen you can go to articles page ....  <br></h3>";
                         require_once __DIR__ . '/../views/error_page.php';
@@ -172,8 +167,7 @@ class ArticleController
                     require_once __DIR__ . '/../views/error_page.php';
                 } else {
                     if ($this->articleRepo->delete($deleted_article_id)) {
-                        header('Location: ./../views/index.php?controller=Article&action=index');
-                        exit;
+                        $this->helper->redirectTo('./../views/index.php?controller=Article&action=index');
                     } else {
                         $_SESSION['message'] = "<h3>can't delete this article <br></h3>";
                         require_once __DIR__ . '/../views/error_page.php';

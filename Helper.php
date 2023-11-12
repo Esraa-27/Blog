@@ -9,4 +9,8 @@ class Helper
         $data = htmlspecialchars($data);
         return $data;
     }
+    public  function redirectTo($url){
+        header('Location: '. $url);
+        exit;
+    }
 }
