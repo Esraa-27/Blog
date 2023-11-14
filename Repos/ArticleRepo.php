@@ -15,6 +15,9 @@ class ArticleRepo
 
     public function getById(int $id)
     {
+        if (empty($id)) {
+            return null;
+        }
         $sql = 'SELECT * FROM article where id=:id';
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
@@ -38,7 +41,7 @@ class ArticleRepo
             return null;
     }
 
-    public function create( $new_article)
+    public function create($new_article)
     {
         if (empty($new_article)) {
             return null;

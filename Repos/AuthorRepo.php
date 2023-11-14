@@ -22,13 +22,14 @@ class AuthorRepo
             return null;
     }
 
-    function getById ($id ){
+    function getById($id)
+    {
         $sql = 'SELECT * FROM author where id=:id';
         $statement = $GLOBALS['pdo']->prepare($sql);
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
         $statement->execute();
         $author = $statement->fetch(PDO::FETCH_ASSOC);
-        if(!empty($author)){
+        if (!empty($author)) {
             return $author;
         }
         return null;
