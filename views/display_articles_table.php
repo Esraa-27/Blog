@@ -1,3 +1,18 @@
+<style>
+    .logout{
+        position: absolute;
+        right: 10%;
+
+    }
+
+
+</style>
+
+
+<div  class=" logout">
+    <a  href="./index.php?controller=Auth&action=logout" class="btn btn-danger" >Log Out</a>
+</div>
+
 
 <h2 class="text-center" >Display Article </h2>
 <div>
@@ -30,8 +45,8 @@
             }
 
             echo ' <td>'.
-                '<a  href="http://localhost/Blog/views/index.php?controller=Article&action=updateView&id='.$article['id'].'" class="btn btn-warning mx-1">Update</a> '.
-                '<a  href="http://localhost/Blog/views/index.php?controller=Article&action=deleteView&id='.$article['id'].'"  class="btn btn-danger mx-1" >Delete</a> '.
+                '<a  href="./index.php?controller=Article&action=updateView&id='.$article['id'].'" class="btn btn-warning mx-1">Update</a> '.
+                '<a  href="./index.php?controller=Article&action=deleteView&id='.$article['id'].'"  class="btn btn-danger mx-1" >Delete</a> '.
                 '</td>';
             echo " </tr>";
 
